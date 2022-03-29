@@ -1,3 +1,11 @@
+Aspose.Slides==22.1
+lxml==4.8.0
+numpy==1.19.5
 pandas==1.0.3
+Pillow==8.4.0
+python-dateutil==2.8.2
 python-pptx==0.6.18
+pytz==2022.1
+six==1.16.0
 xlrd==1.2.0
+XlsxWriter==3.0.3
