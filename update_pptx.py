@@ -35,13 +35,13 @@ def calc_data():
     OPV = (portfolio, nifty)
     
     # PORTFOLIO ALLOCATION BY TOP 5 SECTORS
-    df_hd = df_hd[df_hd["Unnamed: 0"] == "Average"][["Unnamed: 1", "Values"]]
+    df_hd = df_hd[df_hd["Unnamed: 0"] == "Average"][["Unnamed: 1", "0"]]
     df_hd["Unnamed: 1"] = df_hd["Unnamed: 1"].apply(lambda label: label.replace("_", " "))
-    df_hd["Values"] = df_hd["Values"].apply(lambda value: int(value) / 100)
+    df_hd["0"] = df_hd["0"].apply(lambda value: int(value) / 100)
     
     # RISK INDICATOR
     avg_hold = df_ri[df_ri["Unnamed: 1"] == "Avg_Hold"]["0"].to_list()[0]
-    avg_hold = str(avg_hold)
+    avg_hold = '{:.2f}'.format(float(avg_hold))
     start_date = df_ri[df_ri["Unnamed: 1"] == "Start Date"]["0"].to_list()[0]
     week_start = df_ri[df_ri["Unnamed: 1"] == "Week Start"]["0"].to_list()[0]
     week_end = df_ri[df_ri["Unnamed: 1"] == "Week End"]["0"].to_list()[0]
@@ -57,7 +57,7 @@ def generate_pptx():
     j = 0
     try:
         result = calc_data()
-        prs = Presentation("pptx/AlgoT_Pitch_17032022.pptx")
+        prs = Presentation("pptx/input/AlgoT_Pitch_01042022.pptx")
         for slide in prs.slides:
             for shape in slide.shapes:
                 try:
@@ -115,7 +115,7 @@ def generate_pptx():
                         # UPDATE HORIZONTAL LINE CHART
                         chart_data = ChartData()
                         chart_data.categories = result[3]["Unnamed: 1"].to_list()
-                        chart_data.add_series('New Series 1', result[3]["Values"], number_format="##%")
+                        chart_data.add_series('New Series 1', result[3]["0"], number_format="##%")
                         shape.chart.replace_data(chart_data)
 
                     elif i == 7:
@@ -131,7 +131,7 @@ def generate_pptx():
                         cells[0].text_frame.paragraphs[0].runs[0].font.bold = True
                         cells[0].text_frame.paragraphs[1].runs[0].font.size = Pt(6)
                         cells[0].text_frame.paragraphs[1].runs[0].font.bold = False
-                        cells[1].text_frame.paragraphs[0].runs[0].font.size = Pt(8)
+                        cells[1].text_frame.paragraphs[0].runs[0].font.size = Pt(10)
                         cells[1].text_frame.paragraphs[0].runs[0].font.bold = False
                         cells[1].text_frame.paragraphs[0].alignment = PP_ALIGN.CENTER
                         cells[1].text_frame.paragraphs[0].runs[0].font.color.rgb = RGBColor(0, 0, 0)
@@ -140,7 +140,7 @@ def generate_pptx():
                         
                     i+=1
                     pass
-        prs.save("pptx/result_{}.pptx".format(result[4][2]))
+        prs.save("pptx/output/AlgoT_Pitch_{}.pptx".format(datetime.strptime(result[4][2], '%d-%b, %Y').strftime('%d%m%Y')))
         print("Successfully updated pptx")
     except Exception as e:
         print(e)
